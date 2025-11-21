@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Selection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        .guideline {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 10px rgba(100, 149, 237, 0.5);
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            max-width: 800px;
+        }
+
+        .game-button {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .game-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+            z-index: -1;
+        }
+
+        .game-button:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(100, 149, 237, 0.4);
+        }
+
+        /* Flip Game Button */
+        #flip-game {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.2) 0%, rgba(142, 68, 173, 0.2) 100%);
+        }
+
+        #flip-game:hover {
+            animation: flip 0.6s ease;
+        }
+
+        @keyframes flip {
+            0% {
+                transform: perspective(600px) rotateY(0) translateY(0);
+            }
+            50% {
+                transform: perspective(600px) rotateY(180deg) translateY(-5px);
+            }
+            100% {
+                transform: perspective(600px) rotateY(360deg) translateY(-10px);
+            }
+        }
+
+        /* Spin Wheel Button */
+        #spin-wheel {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(241, 196, 15, 0.2) 100%);
+        }
+
+        #spin-wheel:hover {
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg) translateY(0);
+            }
+            25% {
+                transform: rotate(5deg) translateY(-5px);
+            }
+            50% {
+                transform: rotate(0deg) translateY(-10px);
+            }
+            75% {
+                transform: rotate(-5deg) translateY(-5px);
+            }
+            100% {
+                transform: rotate(0deg) translateY(0);
+            }
+        }
+
+        .button-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+        }
+
+        .button-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-subtext {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+
+        /* Glow effect on hover */
+        .game-button::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff00cc, #3333ff, #00ccff, #33ff99);
+            background-size: 400% 400%;
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .game-button:hover::after {
+            opacity: 1;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .buttons-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .guideline {
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <h1 class="guideline">Choose a game to start</h1>
+        
+        <div class="buttons-container">
+            <a href="https://daravuth995.github.io/Flip-Game-Official-/" class="game-button" id="flip-game" target="_blank">
+                <div class="button-icon">🃏</div>
+                <div class="button-text">Flip Game</div>
+                <div class="button-subtext">Test your memory</div>
+            </a>
+            
+            <a href="https://daravuth995.github.io/LUCKY-SPIN-ROYALE/" class="game-button" id="spin-wheel" target="_blank">
+                <div class="button-icon">🎡</div>
+                <div class="button-text">Spin Wheel</div>
+                <div class="button-subtext">Try your luck</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Create background particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 5px and 30px
+                const size = Math.random() * 25 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation delay and duration
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Initialize particles when page loads
+        document.addEventListener('DOMContentLoaded', createParticles);
+    </script>
+</body>
+</html>
